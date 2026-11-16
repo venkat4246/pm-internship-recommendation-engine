@@ -1,0 +1,432 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Dashboard | InternMatch AI{% endblock %}
+
+{% block content %}
+
+<style>
+    .dashboard-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .dashboard-heading {
+        margin-bottom: 25px;
+    }
+
+    .dashboard-heading h1 {
+        color: #171717;
+        font-size: 30px;
+    }
+
+    .dashboard-heading p,
+    .muted {
+        color: #666;
+    }
+
+    .dashboard-card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,.04);
+    }
+
+    .profile-section {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+
+    .profile-image,
+    .default-avatar {
+        width: 125px;
+        height: 125px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .profile-image {
+        border: 4px solid #ede9fe;
+        background: #f5f3ff;
+    }
+
+    .default-avatar {
+        background: #7c3aed;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    .profile-info {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .profile-info h2 {
+        margin: 0 0 8px;
+    }
+
+    .profile-info p {
+        color: #666;
+    }
+
+    .picture-form {
+        margin-top: 20px;
+    }
+
+    .picture-input {
+        display: block;
+        margin: 12px 0;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #292929;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #d4d4d4;
+        border-radius: 8px;
+        background: white;
+        color: #171717;
+        font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: 2px solid #c4b5fd;
+        border-color: #7c3aed;
+    }
+
+    .form-group textarea {
+        min-height: 90px;
+        resize: vertical;
+    }
+
+    .purple-button {
+        display: inline-block;
+        background: #7c3aed;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        margin-top: 12px;
+    }
+
+    .purple-button:hover {
+        background: #5b21b6;
+    }
+
+    .remove-button {
+        background: white;
+        color: #dc2626;
+        border: 1px solid #dc2626;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-left: 8px;
+    }
+
+    .dashboard-message {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    .dashboard-message.success {
+        background: #ecfdf5;
+        color: #166534;
+    }
+
+    .dashboard-message.error {
+        background: #fef2f2;
+        color: #991b1b;
+    }
+
+    .dashboard-links {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 650px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-container {
+            padding: 12px;
+        }
+
+        .dashboard-card {
+            padding: 18px;
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+
+    <div class="dashboard-heading">
+        <h1>My Dashboard</h1>
+        <p>Manage your student profile and discover internship opportunities.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="dashboard-message {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Student account and profile picture -->
+    <section class="dashboard-card">
+
+        <h2>My Account</h2>
+
+        <div class="profile-section">
+
+            <div>
+                {% if user.profile_picture %}
+                    <img
+                        id="picturePreview"
+                        class="profile-image"
+                        src="{{ url_for('static', filename='uploads/' ~ user.profile_picture) }}"
+                        alt="Profile Picture"
+                    >
+                {% else %}
+                    <div class="default-avatar">
+                        {{ user.name[0]|upper }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="profile-info">
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
+                <p>InternMatch AI Student Account</p>
+            </div>
+
+        </div>
+
+        <form
+            class="picture-form"
+            action="/update-profile-picture"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            <label for="profile_picture">
+                <strong>Upload or change profile picture</strong>
+            </label>
+
+            <input
+                type="file"
+                id="profile_picture"
+                name="profile_picture"
+                class="picture-input"
+                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                required
+            >
+
+            <button type="submit" class="purple-button">
+                Upload Picture
+            </button>
+        </form>
+
+        {% if user.profile_picture %}
+            <form
+                id="removePictureForm"
+                action="/remove-profile-picture"
+                method="POST"
+            >
+                <button type="submit" class="remove-button">
+                    Remove Picture
+                </button>
+            </form>
+        {% endif %}
+
+    </section>
+
+    <!-- Student profile form -->
+    <section class="dashboard-card">
+
+        <h2>Student Profile</h2>
+
+        <p class="muted">
+            Enter your academic details, skills and internship preferences.
+            You can update these details whenever they change.
+        </p>
+
+        <form
+            id="studentProfileForm"
+            action="/save-profile"
+            method="POST"
+        >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="qualification">Qualification</label>
+                    <select id="qualification" name="qualification">
+                        <option value="">Select qualification</option>
+                        {% for option in ["Diploma", "B.Tech", "B.E.", "BCA", "B.Sc", "B.Com", "BA", "MBA", "Other"] %}
+                            <option value="{{ option }}"
+                                {% if profile.qualification == option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="college">College / Institution</label>
+                    <input
+                        type="text"
+                        id="college"
+                        name="college"
+                        placeholder="Enter your college name"
+                        value="{{ profile.college }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="branch">Branch / Department</label>
+                    <input
+                        type="text"
+                        id="branch"
+                        name="branch"
+                        placeholder="Example: Computer Science"
+                        value="{{ profile.branch }}"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="graduation_year">Expected Graduation Year</label>
+                    <input
+                        type="number"
+                        id="graduation_year"
+                        name="graduation_year"
+                        min="2020"
+                        max="2040"
+                        placeholder="Example: 2028"
+                        value="{{ profile.graduation_year }}"
+                    >
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="skills">Your Skills</label>
+                    <textarea
+                        id="skills"
+                        name="skills"
+                        placeholder="Example: Python, HTML, CSS, JavaScript, SQL, Communication"
+                    >{{ profile.skills }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="preferred_domain">Preferred Internship Domain</label>
+                    <select id="preferred_domain" name="preferred_domain">
+                        <option value="">Select preferred domain</option>
+                        {% for option in ["Technology", "Web Development", "Artificial Intelligence", "Data Science", "Cybersecurity", "Finance", "Marketing", "Human Resources", "Business", "Design", "Other"] %}
+                            <option value="{{ option }}"
+                                {% if profile.preferred_domain == option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="preferred_location">Preferred Location</label>
+                    <input
+                        type="text"
+                        id="preferred_location"
+                        name="preferred_location"
+                        placeholder="Example: Hyderabad, Remote, Any"
+                        value="{{ profile.preferred_location }}"
+                    >
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="internship_type">Preferred Internship Type</label>
+                    <select id="internship_type" name="internship_type">
+                        <option value="">Select internship type</option>
+                        {% for option in ["Remote", "On-site", "Hybrid", "Any"] %}
+                            <option value="{{ option }}"
+                                {% if profile.internship_type == option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="purple-button">
+                Save Student Profile
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- Explore internships -->
+    <section class="dashboard-card">
+
+        <h2>Explore Internships</h2>
+
+        <p class="muted">
+            Discover opportunities from the official PM Internship Scheme
+            and other verified internship sources.
+        </p>
+
+        <div class="dashboard-links">
+            <a href="/#profile" class="purple-button">
+                Find Internships
+            </a>
+
+            <a href="/about" class="purple-button">
+                About InternMatch AI
+            </a>
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

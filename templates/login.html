@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Login | InternMatch AI{% endblock %}
+
+{% block content %}
+
+<section style="
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 55px 20px;
+    background: #F5F3FF;
+">
+
+    <div style="
+        width: 100%;
+        max-width: 440px;
+        background: white;
+        padding: 38px;
+        border-radius: 18px;
+        box-shadow: 0 10px 35px rgba(91, 33, 182, 0.10);
+    ">
+
+        <div style="text-align: center; margin-bottom: 28px;">
+
+            <div style="
+                width: 60px;
+                height: 60px;
+                margin: 0 auto 15px;
+                border-radius: 16px;
+                background: #EDE9FE;
+                color: #6D28D9;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 27px;
+                font-weight: bold;
+            ">
+                AI
+            </div>
+
+            <h1 style="
+                color: #181225;
+                font-size: 28px;
+                margin-bottom: 9px;
+            ">
+                Welcome Back
+            </h1>
+
+            <p style="color: #6B6575;">
+                Login to continue to InternMatch AI.
+            </p>
+
+        </div>
+
+
+        {% if registered %}
+            <div style="
+                background: #DCFCE7;
+                color: #166534;
+                padding: 12px;
+                border-radius: 9px;
+                margin-bottom: 18px;
+                font-size: 14px;
+            ">
+                Account created successfully! Please login.
+            </div>
+        {% endif %}
+
+
+        {% if error %}
+            <div style="
+                background: #FEE2E2;
+                color: #B91C1C;
+                padding: 12px;
+                border-radius: 9px;
+                margin-bottom: 18px;
+                font-size: 14px;
+            ">
+                {{ error }}
+            </div>
+        {% endif %}
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <label for="email" style="
+                display: block;
+                margin-bottom: 7px;
+                color: #272033;
+                font-weight: 600;
+            ">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                autocomplete="email"
+                style="
+                    width: 100%;
+                    padding: 13px;
+                    margin-bottom: 20px;
+                    border: 1px solid #DDD6FE;
+                    border-radius: 9px;
+                    font-size: 15px;
+                    box-sizing: border-box;
+                "
+            >
+
+
+            <label for="password" style="
+                display: block;
+                margin-bottom: 7px;
+                color: #272033;
+                font-weight: 600;
+            ">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+                style="
+                    width: 100%;
+                    padding: 13px;
+                    margin-bottom: 24px;
+                    border: 1px solid #DDD6FE;
+                    border-radius: 9px;
+                    font-size: 15px;
+                    box-sizing: border-box;
+                "
+            >
+
+
+            <button type="submit" style="
+                width: 100%;
+                padding: 14px;
+                background: #7C3AED;
+                color: white;
+                border: none;
+                border-radius: 9px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+            ">
+                Login
+            </button>
+
+        </form>
+
+
+        <p style="
+            text-align: center;
+            margin-top: 24px;
+            color: #6B6575;
+            font-size: 14px;
+        ">
+            Don't have an account?
+
+            <a href="{{ url_for('register') }}" style="
+                color: #6D28D9;
+                font-weight: 600;
+                text-decoration: none;
+            ">
+                Register
+            </a>
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

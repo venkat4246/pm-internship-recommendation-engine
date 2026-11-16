@@ -1,0 +1,623 @@
+
+{% extends "base.html" %}
+
+{% block title %}InternMatch AI | Discover Your Internship{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-copy">
+
+        <span class="hero-badge">
+            AI-POWERED INTERNSHIP DISCOVERY
+        </span>
+
+        <h1>
+            Discover the right internship.
+            <span>Build your future.</span>
+        </h1>
+
+        <p class="sub">
+            Explore opportunities under the PM Internship Scheme
+            and from other verified organizations. Let AI help
+            you discover internships that match your skills,
+            education and career interests.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#profile" class="primary-btn">
+                Find My Internship →
+            </a>
+
+            <a href="#opportunity-types" class="secondary-btn">
+                Explore Opportunities
+            </a>
+        </div>
+
+        <div class="hero-points">
+            <span>✓ Personalized recommendations</span>
+            <span>✓ Multiple internship sources</span>
+            <span>✓ Skill-based matching</span>
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+        <div class="ai-circle">
+            <span>AI</span>
+        </div>
+        <p>SMART INTERNSHIP MATCHING</p>
+    </div>
+</section>
+
+
+<!-- OPPORTUNITY TYPES -->
+<section class="opportunity-section" id="opportunity-types">
+
+    <div class="section-heading">
+        <span class="eyebrow">EXPLORE OPPORTUNITIES</span>
+        <h2>Find opportunities that fit your goals.</h2>
+        <p>
+            Discover internship opportunities from different sources
+            through one recommendation platform.
+        </p>
+    </div>
+
+    <div class="opportunity-grid">
+
+        <article class="opportunity-card pmis-card">
+            <div class="opportunity-icon">🇮🇳</div>
+            <span class="card-label">GOVERNMENT SCHEME</span>
+            <h3>PM Internship Scheme</h3>
+            <p>
+                Explore internship opportunities offered through
+                India's PM Internship Scheme, subject to official
+                eligibility requirements.
+            </p>
+            <a href="#profile">Find PMIS Matches →</a>
+        </article>
+
+        <article class="opportunity-card other-card">
+            <div class="opportunity-icon">💼</div>
+            <span class="card-label">MULTIPLE SOURCES</span>
+            <h3>Other Internships</h3>
+            <p>
+                Discover relevant opportunities from verified
+                companies and other internship platforms.
+            </p>
+            <a href="#profile">Find Other Matches →</a>
+        </article>
+
+        <article class="opportunity-card ai-card">
+            <div class="opportunity-icon">✦</div>
+            <span class="card-label">INTELLIGENT MATCHING</span>
+            <h3>AI Recommendations</h3>
+            <p>
+                Get personalized recommendations by comparing
+                your education, skills and interests with
+                internship requirements.
+            </p>
+            <a href="#profile">Get Recommendations →</a>
+        </article>
+
+    </div>
+</section>
+
+
+<!-- STUDENT PROFILE -->
+<section class="content-grid" id="profile">
+
+    <div class="form-panel">
+
+        <div class="panel-heading">
+            <div>
+                <p class="eyebrow">PERSONALIZED DISCOVERY</p>
+                <h2>Tell us about yourself</h2>
+                <p class="form-description">
+                    Enter your details to discover suitable internships.
+                </p>
+            </div>
+
+            <span class="step">YOUR PROFILE</span>
+        </div>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/">
+
+            <label for="qualification">
+                Highest qualification
+            </label>
+
+            <select id="qualification" name="qualification">
+                <option value="">Select qualification</option>
+
+                {% for q in [
+                    "10th Pass",
+                    "12th Pass",
+                    "Diploma",
+                    "B.Com",
+                    "BBA",
+                    "BCA",
+                    "B.Sc",
+                    "B.Tech",
+                    "BA",
+                    "MBA",
+                    "Other Graduate"
+                ] %}
+
+                <option value="{{ q }}"
+                    {% if profile.get('qualification', '') == q %}
+                        selected
+                    {% endif %}>
+                    {{ q }}
+                </option>
+
+                {% endfor %}
+            </select>
+
+
+            <label for="field">
+                Study / career field
+            </label>
+
+            <input
+                id="field"
+                name="field"
+                type="text"
+                placeholder="e.g. Computer Science, Commerce, Marketing"
+                value="{{ profile.get('field', '') }}"
+            >
+
+
+            <label for="skills">
+                Technical and professional skills
+                <small>Separate skills with commas</small>
+            </label>
+
+            <textarea
+                id="skills"
+                name="skills"
+                rows="3"
+                placeholder="e.g. Python, Java, SQL, Excel, Communication"
+            >{{ profile.get('skills', '') }}</textarea>
+
+
+            <div class="two-col">
+
+                <div>
+                    <label for="location">
+                        Preferred location
+                    </label>
+
+                    <input
+                        id="location"
+                        name="location"
+                        type="text"
+                        placeholder="e.g. Hyderabad or Remote"
+                        value="{{ profile.get('location', '') }}"
+                    >
+                </div>
+
+                <div>
+                    <label for="interests">
+                        Your interests
+                    </label>
+
+                    <input
+                        id="interests"
+                        name="interests"
+                        type="text"
+                        placeholder="e.g. AI, Data Science, Finance"
+                        value="{{ profile.get('interests', '') }}"
+                    >
+                </div>
+
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Find My AI Matches →
+            </button>
+
+            <p class="privacy-note">
+                Your profile details are used to calculate internship
+                recommendations in this application.
+            </p>
+
+        </form>
+
+    </div>
+
+
+    <!-- HOW IT WORKS -->
+    <aside class="how-panel">
+
+        <p class="eyebrow">HOW IT WORKS</p>
+
+        <h2>Smarter discovery. Better opportunities.</h2>
+
+        <div class="how-item">
+            <b>01</b>
+            <div>
+                <strong>Create your profile</strong>
+                <p>
+                    Share your educational qualification,
+                    skills, interests and preferred location.
+                </p>
+            </div>
+        </div>
+
+        <div class="how-item">
+            <b>02</b>
+            <div>
+                <strong>AI analyses your profile</strong>
+                <p>
+                    The recommendation engine compares your
+                    profile with available internship requirements.
+                </p>
+            </div>
+        </div>
+
+        <div class="how-item">
+            <b>03</b>
+            <div>
+                <strong>Explore personalized matches</strong>
+                <p>
+                    View relevant opportunities from PMIS
+                    and other verified sources.
+                </p>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Our goal</strong>
+            <p>
+                Help students discover relevant opportunities
+                through intelligent internship recommendations.
+            </p>
+        </div>
+
+    </aside>
+
+</section>
+
+
+<!-- RECOMMENDATION RESULTS -->
+{% if submitted %}
+
+<section class="results" id="results">
+
+    <div class="results-head">
+        <div>
+            <p class="eyebrow">YOUR AI RESULTS</p>
+            <h2>Recommended internships</h2>
+        </div>
+
+        <span class="result-count">
+            {{ results|length }} matches found
+        </span>
+    </div>
+
+
+    {% if results %}
+
+    <!-- SOURCE FILTERS -->
+    <div class="internship-filters">
+
+        <button type="button" class="filter-btn active"
+                data-filter="all">
+            All Internships
+        </button>
+
+        <button type="button" class="filter-btn"
+                data-filter="pmis">
+            🇮🇳 PM Internship Scheme
+        </button>
+
+        <button type="button" class="filter-btn"
+                data-filter="company">
+            Company Internships
+        </button>
+
+        <button type="button" class="filter-btn"
+                data-filter="platform">
+            Verified Platforms
+        </button>
+
+        <button type="button" class="filter-btn"
+                data-filter="demo">
+            Demo
+        </button>
+
+        <button type="button" class="filter-btn"
+                data-filter="other">
+            Other / Unclassified
+        </button>
+
+    </div>
+
+
+    <div class="cards">
+
+        {% for item in results %}
+
+        {% set source = item.get('source_type', 'DEMO')|string|upper %}
+        {% set status = item.get('verification_status', 'Demo')|string|lower %}
+
+        {% if 'PMIS' in source or 'PM INTERNSHIP' in source or 'GOVERNMENT' in source %}
+            {% set source_group = 'pmis' %}
+        {% elif 'COMPANY' in source %}
+            {% set source_group = 'company' %}
+        {% elif 'PLATFORM' in source %}
+            {% set source_group = 'platform' %}
+        {% elif 'DEMO' in source %}
+            {% set source_group = 'demo' %}
+        {% else %}
+            {% set source_group = 'other' %}
+        {% endif %}
+
+
+        <article class="job-card internship-card"
+                 data-source="{{ source_group }}">
+
+            <!-- JOB HEADER -->
+            <div class="job-top">
+
+                <span class="category">
+                    {{ item.get('category', 'Internship') }}
+                </span>
+
+                <span class="score">
+                    {{ item.get('match_score', 0) }}% Match
+                </span>
+
+            </div>
+
+
+            <!-- TITLE AND COMPANY -->
+            <h3>{{ item.get('title', 'Internship Opportunity') }}</h3>
+
+            <p class="company-name">
+                {% if item.get('company_name') %}
+                    {{ item.company_name }}
+                {% else %}
+                    Company information not provided
+                {% endif %}
+            </p>
+
+
+            <!-- SOURCE LABEL -->
+            <div class="internship-status">
+
+                {% if source_group == 'pmis' %}
+
+                    {% if status == 'verified' %}
+                        <span class="verified-label">
+                            🇮🇳 GOVERNMENT · PMIS
+                        </span>
+                    {% else %}
+                        <span class="demo-label">
+                            PMIS · NOT VERIFIED
+                        </span>
+                    {% endif %}
+
+                {% elif source_group == 'company' %}
+
+                    {% if status == 'verified' %}
+                        <span class="verified-label">
+                            ✓ VERIFIED · COMPANY
+                        </span>
+                    {% else %}
+                        <span class="demo-label">
+                            COMPANY · NOT VERIFIED
+                        </span>
+                    {% endif %}
+
+                {% elif source_group == 'platform' %}
+
+                    {% if status == 'verified' %}
+                        <span class="verified-label">
+                            ✓ VERIFIED · PLATFORM
+                        </span>
+                    {% else %}
+                        <span class="demo-label">
+                            PLATFORM · NOT VERIFIED
+                        </span>
+                    {% endif %}
+
+                {% elif source_group == 'demo' %}
+
+                    <span class="demo-label">
+                        DEMO · SAMPLE RECORD
+                    </span>
+
+                {% else %}
+
+                    <span class="demo-label">
+                        SOURCE NOT CONFIRMED
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+            <p class="description">
+                {{ item.get('description', 'No description available.') }}
+            </p>
+
+
+            <!-- INTERNSHIP DETAILS -->
+            <div class="meta">
+
+                <span>
+                    📍 Location:
+                    {{ item.get('location', 'Not specified') }}
+                </span>
+
+                <span>
+                    🎓 Qualification:
+                    {{ item.get('qualification', 'Not specified') }}
+                </span>
+
+                {% if item.get('deadline') %}
+                <span>
+                    📅 Deadline:
+                    {{ item.deadline }}
+                </span>
+                {% endif %}
+
+            </div>
+
+
+            <!-- SKILLS -->
+            <div class="skill-line">
+                <strong>Required skills:</strong>
+                {{ item.get('skills', 'Not specified') }}
+            </div>
+
+
+            <!-- AI MATCH REASONS -->
+            {% if item.get('match_reasons') %}
+
+            <div class="match-reasons">
+
+                <strong>Why this matches you:</strong>
+
+                <ul>
+                    {% for reason in item.match_reasons %}
+                    <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- ACTION BUTTONS -->
+            <div class="job-actions">
+
+                <a
+                    href="/internship/{{ item.id }}"
+                    class="secondary-btn"
+                >
+                    View Details →
+                </a>
+
+                {% if status == 'verified' and item.get('application_url') %}
+
+                    <a
+                        href="{{ item.application_url }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="primary-btn"
+                    >
+                        Apply Now ↗
+                    </a>
+
+                {% else %}
+
+                    <span class="apply-unavailable">
+                        Application link unavailable
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    <p id="no-filter-results" class="no-results" hidden>
+        No internships are available in this source category.
+        Try selecting another filter.
+    </p>
+
+
+    {% else %}
+
+    <div class="no-results">
+        <h3>No matching internships found</h3>
+
+        <p>
+            Try changing your qualification, skills, location
+            or interests to find other opportunities.
+        </p>
+    </div>
+
+    {% endif %}
+
+
+    <p class="results-disclaimer">
+        AI match percentages indicate profile relevance only.
+        They do not guarantee eligibility, selection or an internship offer.
+        Always check the original source before applying.
+    </p>
+
+</section>
+
+{% endif %}
+
+
+<!-- INTERNSHIP FILTER SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const internshipCards = document.querySelectorAll(".internship-card");
+    const noResultsMessage = document.getElementById("no-filter-results");
+
+    if (!filterButtons.length || !internshipCards.length) {
+        return;
+    }
+
+    filterButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            const selectedFilter = button.dataset.filter;
+            let visibleCount = 0;
+
+            filterButtons.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            internshipCards.forEach(function (card) {
+
+                const cardSource = card.dataset.source;
+
+                const shouldShow =
+                    selectedFilter === "all" ||
+                    selectedFilter === cardSource;
+
+                card.style.display = shouldShow ? "" : "none";
+
+                if (shouldShow) {
+                    visibleCount++;
+                }
+
+            });
+
+            if (noResultsMessage) {
+                noResultsMessage.hidden = visibleCount !== 0;
+            }
+
+        });
+
+    });
+
+});
+</script>
+
+{% endblock %}

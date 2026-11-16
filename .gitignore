@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.env
+venv/
+.venv/
+.vscode/
+logs/
+static/uploads/*
+*.db
+*.sqlite
+*.sqlite3
+pmis_inspection.txt
